@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+
+</head>
+<body>
+    <div class="thumbnails">
+        <img src="https://c4.wallpaperflare.com/wallpaper/531/72/20/red-bull-formula-1-car-racing-wallpaper-preview.jpg" alt="Image 1" class="thumbnail">
+        <img src="https://c4.wallpaperflare.com/wallpaper/907/818/360/ferrari-ferrari-f1-wallpaper-preview.jpg" alt="Image 2" class="thumbnail">
+        <img src="https://c4.wallpaperflare.com/wallpaper/422/882/465/ineos-iwc-lewis-hamilton-mercedes-amg-petronas-formula-1-hd-wallpaper-preview.jpg" alt="Image 3" class="thumbnail">
+        <!-- Add more thumbnail images as needed -->
+    </div>
+    <div class="enlarged-image">
+        <img src="" alt="Enlarged Image" id="enlarged-img">
+        <div class="slideshow-controls">
+            <button id="start-slideshow">Start Slideshow</button>
+            <button id="close-slideshow">Close Slideshow</button>
+        </div>
+    </div>
+    <script>
+        // JavaScript Code
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const enlargedImg = document.getElementById('enlarged-img');
+        const enlargedImageContainer = document.querySelector('.enlarged-image');
+        const startSlideshowButton = document.getElementById('start-slideshow');
+        const closeSlideshowButton = document.getElementById('close-slideshow');
+        let currentIndex = 0;
+        let slideshowInterval;
+
+        function showImage(index) {
+            const imgSrc = thumbnails[index].getAttribute('src');
+            enlargedImg.setAttribute('src', imgSrc);
+        }
+
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                showImage(index);
+                enlargedImageContainer.style.display = 'block';
+                startSlideshowButton.disabled = false;
+            });
+        });
+
+        startSlideshowButton.addEventListener('click', () => {
+            slideshowInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % thumbnails.length;
+                showImage(currentIndex);
+            }, 2000); // Change image every 2 seconds
+            startSlideshowButton.disabled = true;
+            closeSlideshowButton.disabled = false;
+        });
+
+        closeSlideshowButton.addEventListener('click', () => {
+            clearInterval(slideshowInterval);
+            enlargedImageContainer.style.display = 'none';
+            startSlideshowButton.disabled = false;
+            closeSlideshowButton.disabled = true;
+        });
+    </script>
+    <style>
+        .body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.thumbnails {
+    display: flex;
+}
+
+.thumbnail {
+    margin: 0 10px;
+    cursor: pointer;
+    max-width: 100px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.thumbnail:hover {
+    border-color: #007BFF;
+}
+
+.enlarged-image {
+    display: none;
+    text-align: center;
+}
+
+.enlarged-image img {
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.slideshow-controls {
+    margin-top: 10px;
+}
+    </style>
+</body>
+</html>
